@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Seller Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      .dashboard-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      }
+      .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      .product {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 15px 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+      input, textarea {
+        width: 100%;
+        max-width: 500px;
+        padding: 12px;
+        margin: 10px 0;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+      input:focus, textarea:focus {
+        outline: none;
+        border-color: #11998e;
+      }
+      button {
+        padding: 12px 24px;
+        margin: 5px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+      }
+      .btn-secondary {
+        background: #6c757d;
+        color: white;
+      }
+      .btn-danger {
+        background: #dc3545;
+        color: white;
+      }
+    </style>
+  </head>
+  <body style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+    <div class="dashboard-container">
+      <div class="dashboard-header">
+        <h2 style="color: #11998e;">🏢 Seller Dashboard</h2>
+        <div>
+          <span id="sellerName" style="color: #11998e; font-weight: 600; margin-right: 15px;"></span>
+          <button class="btn-secondary" onclick="window.location.href='admin-orders.html'">📦 View All Orders</button>
+          <button class="btn-danger" onclick="logout()">Logout</button>
+        </div>
+      </div>
+
+      <h3 style="color: #11998e; margin-top: 30px;">➕ Upload Product</h3>
+
+      <input id="name" placeholder="Product Name" />
+      <input id="price" type="number" placeholder="Price" />
+      <textarea id="description" placeholder="Description" rows="4"></textarea>
+      <input id="image" placeholder="Image URL" />
+      <input id="type" placeholder="Type (e.g., Electronics, Clothing)" />
+
+      <button class="btn-primary" onclick="uploadProduct()">Upload Product</button>
+
+      <hr style="margin: 40px 0; border: none; border-top: 2px solid #e9ecef;">
+
+      <h2 style="color: #11998e;">📦 Your Products</h2>
+      <div id="productList"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="seller.js"></script>
+  </body>
+</html>

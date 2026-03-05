@@ -1,0 +1,155 @@
+const API = API_ENDPOINTS.products;
+let allProducts = [];
+let currentCategory = 'all';
+
+// Display user coins
+function displayUserCoins() {
+  const gameState = localStorage.getItem("gameState");
+  if (gameState) {
+    const state = JSON.parse(gameState);
+    document.getElementById("userCoins").textContent = Math.floor(state.coins);
+  }
+}
+
+async function loadProducts() {
+  const res = await fetch(API);
+  allProducts = await res.json();
+
+  loadCategories();
+  renderProducts(allProducts);
+}
+
+function loadCategories() {
+  const categories = [...new Set(allProducts.map(p => p.type).filter(Boolean))];
+  const categoriesContainer = document.getElementById("categories");
+
+  categories.forEach(cat => {
+    const li = document.createElement("li");
+    li.textContent = cat;
+    li.onclick = () => filterByCategory(cat);
+    categoriesContainer.appendChild(li);
+  });
+}
+
+function filterByCategory(category) {
+  currentCategory = category;
+
+  const allItems = document.querySelectorAll("#categories li");
+  allItems.forEach(item => item.classList.remove("active"));
+  event.target.classList.add("active");
+
+  if (category === 'all') {
+    renderProducts(allProducts);
+  } else {
+    const filtered = allProducts.filter(p => p.type === category);
+    renderProducts(filtered);
+  }
+}
+
+function renderProducts(products) {
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  if (products.length === 0) {
+    container.innerHTML = "<p>No products found</p>";
+    return;
+  }
+
+  products.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <h3 onclick="openProduct('${p._id}')">${p.name}</h3>
+      <p>₹${p.price}</p>
+      <p>${p.type} </p>
+      <img src="${p.image}" onclick="openProduct('${p._id}')"/>
+      <button onclick="addToCart('${p._id}')">Add to Cart</button>
+      <button onclick="addToWishlist('${p._id}')">♥ Wishlist</button>
+    `;
+    container.appendChild(div);
+  });
+}
+function openProduct(id) {
+  window.location.href = `product.html?id=${id}`;
+}
+
+function addToCart(productId) {
+  const product = allProducts.find(p => p._id === productId);
+
+  if (!product) {
+    alert("Product not found");
+    return;
+  }
+
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const id = String(product._id);
+
+  const item = cart.find(p => p._id === id);
+
+  if (item) {
+    item.qty++;
+    // Update name and price in case they changed
+    item.name = product.name;
+    item.price = Number(product.price);
+  } else {
+    cart.push({
+      _id: id,
+      name: product.name,
+      price: Number(product.price),
+      qty: 1
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert("Added to cart! 🛒");
+}
+
+function addToWishlist(productId) {
+  const product = allProducts.find(p => p._id === productId);
+
+  if (!product) {
+    alert("Product not found");
+    return;
+  }
+
+  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+  const id = String(product._id);
+
+  const item = wishlist.find(p => p._id === id);
+
+  if (item) {
+    alert("Already in wishlist!");
+    return;
+  }
+
+  wishlist.push({
+    _id: id,
+    name: product.name,
+    price: Number(product.price),
+    description: product.description,
+    image: product.image,
+    type: product.type
+  });
+
+  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  alert("Added to wishlist!");
+}
+
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user) {
+  window.location.href = "client.html";
+} else {
+
+  document.getElementById("welcome").innerText =
+    "Welcome, " + user.name;
+}
+function logout() {
+  localStorage.removeItem("user");
+  window.location.href = "client.html";
+}
+
+displayUserCoins();
+loadProducts();

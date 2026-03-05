@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      .checkout-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 40px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      }
+      .box {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+      }
+      input, textarea {
+        width: 100%;
+        padding: 15px;
+        margin: 12px 0;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 16px;
+      }
+      input:focus, textarea:focus {
+        outline: none;
+        border-color: #11998e;
+      }
+      button {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(17, 153, 142, 0.4);
+      }
+    </style>
+  </head>
+  <body style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+    <div class="checkout-container">
+      <h2 style="color: #11998e; margin-bottom: 30px;">💳 Checkout</h2>
+
+      <div class="box" id="summary"></div>
+
+      <div class="box">
+        <h3 style="color: #11998e; margin-bottom: 20px;">📍 Shipping Details</h3>
+
+        <input id="name" placeholder="Full Name" />
+        <input id="phone" placeholder="Phone Number" />
+        <textarea id="address" placeholder="Delivery Address" rows="4"></textarea>
+
+        <button onclick="placeOrder()">Place Order</button>
+      </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="checkout.js"></script>
+  </body>
+</html>

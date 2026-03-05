@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Seller Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      #nameField {
+        display: none;
+      }
+      .toggle-text {
+        text-align: center;
+        margin-top: 15px;
+        color: #666;
+      }
+      .toggle-text a {
+        color: #11998e;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .success {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-container">
+      <div class="auth-box">
+        <h2 id="formTitle">🏢 Seller Login</h2>
+
+        <div id="nameField">
+          <input type="text" id="name" placeholder="Full Name" />
+        </div>
+        <input type="email" id="email" placeholder="Email" />
+        <input type="password" id="password" placeholder="Password" />
+        
+        <button id="submitBtn" onclick="sellerLogin()">Login</button>
+
+        <p id="msg"></p>
+
+        <div class="toggle-text">
+          <span id="toggleText">Don't have an account? <a onclick="toggleMode()">Sign up</a></span>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+          <a href="index.html" style="color: #11998e; text-decoration: none; font-weight: 600;">← Back to Store</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="seller-login.js"></script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Cart</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="page-container">
+      <h2>🛒 My Cart</h2>
+
+      <div id="cart"></div>
+      <h3 id="total" style="text-align: right; color: #28a745; font-size: 28px; margin-top: 20px;"></h3>
+      
+      <div style="display: flex; gap: 15px; margin-top: 30px;">
+        <button onclick="clearCart()" style="flex: 1; background: #dc3545; color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;">Clear Cart</button>
+        <button onclick="window.location.href = 'checkout.html'" style="flex: 2; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;">Proceed to Checkout</button>
+      </div>
+      
+      <br>
+      <a href="index.html" style="color: #11998e; text-decoration: none; font-weight: 600;">← Continue Shopping</a>
+    </div>
+    <script src="cart.js"></script>
+  </body>
+</html>

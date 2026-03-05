@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Product Details</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+    <div class="product-detail" id="product-details">
+      <div class="empty-message">
+        <h3>Loading...</h3>
+      </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+
+      async function loadProduct() {
+        if (!id) {
+          document.getElementById("product-details").innerHTML = '<div class="empty-message"><h3>Product not found</h3><button onclick="window.location.href=\'index.html\'">Back to Store</button></div>';
+          return;
+        }
+
+        try {
+          const res = await fetch(`${API_ENDPOINTS.products}/${id}`);
+
+          if (!res.ok) {
+            throw new Error("Failed to load product");
+          }
+
+          const product = await res.json();
+
+          document.getElementById("product-details").innerHTML = `
+            <div>
+              <img src="${product.image}" alt="${product.name}" class="product-image">
+            </div>
+            <div class="product-info">
+              <h2>${product.name}</h2>
+              <span class="product-type">${product.type || 'Product'}</span>
+              <div class="product-price">₹${product.price}</div>
+              <p class="product-description">${product.description || 'No description available'}</p>
+              
+              <div class="product-actions">
+                <button onclick="addToCart('${product._id}')" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;">
+                  🛒 Add to Cart
+                </button>
+                <button onclick="addToWishlist('${product._id}')" style="background: #e74c3c; color: white;">
+                  ❤️ Add to Wishlist
+                </button>
+              </div>
+              
+              <button onclick="window.location.href='index.html'" style="width: 100%; margin-top: 20px; background: #6c757d; color: white; padding: 12px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;">
+                ← Back to Store
+              </button>
+            </div>
+          `;
+        } catch (err) {
+          document.getElementById("product-details").innerHTML = `
+            <div class="empty-message">
+              <h3>Error loading product</h3>
+              <p>${err.message}</p>
+              <button onclick="window.location.href='index.html'" style="padding: 12px 30px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; margin-top: 20px;">Back to Store</button>
+            </div>
+          `;
+        }
+      }
+
+      function addToCart(productId) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        
+        fetch(`${API_ENDPOINTS.products}/${productId}`)
+          .then(res => res.json())
+          .then(product => {
+            const id = String(product._id);
+            const item = cart.find(p => p._id === id);
+
+            if (item) {
+              item.qty++;
+            } else {
+              cart.push({
+                _id: id,
+                name: product.name,
+                price: Number(product.price),
+                qty: 1
+              });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Added to cart! 🛒");
+          });
+      }
+
+      function addToWishlist(productId) {
+        const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+        
+        fetch(`${API_ENDPOINTS.products}/${productId}`)
+          .then(res => res.json())
+          .then(product => {
+            const id = String(product._id);
+            const item = wishlist.find(p => p._id === id);
+
+            if (item) {
+              alert("Already in wishlist!");
+              return;
+            }
+
+            wishlist.push({
+              _id: id,
+              name: product.name,
+              price: Number(product.price),
+              description: product.description,
+              image: product.image,
+              type: product.type
+            });
+
+            localStorage.setItem("wishlist", JSON.stringify(wishlist));
+            alert("Added to wishlist!");
+          });
+      }
+
+      loadProduct();
+    </script>
+  </body>
+</html>
